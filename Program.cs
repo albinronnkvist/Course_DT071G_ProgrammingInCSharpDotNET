@@ -1,14 +1,20 @@
+using ForumAPI.Repositories.PostRepository;
+using ForumAPI.Repositories.UserRepository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register auto mapper
+// Register auto mapper.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// Register dependency injection
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
