@@ -1,0 +1,39 @@
+using ForumAPI.Models;
+
+namespace ForumAPI.Repositories.PostRepository
+{
+  public class PostRepository : IPostRepository
+  {
+    public Task<IEnumerable<Post>> GetAllPostsAsync()
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<Post> GetPostByIdAsync(int id)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task CreatePostAsync(Post post)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task UpdatePostAsync(Post post)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task DeletePostAsync(Post post)
+    {
+      throw new NotImplementedException();
+    }
+
+    
+
+    public Task<bool> SaveChangesAsync()
+    {
+      throw new NotImplementedException();
+    }
+  }
+}
