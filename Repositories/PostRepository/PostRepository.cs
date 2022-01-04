@@ -1,5 +1,6 @@
 using ForumAPI.Data;
 using ForumAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForumAPI.Repositories.PostRepository
 {
@@ -14,36 +15,48 @@ namespace ForumAPI.Repositories.PostRepository
 
 
 
-    public Task<IEnumerable<Post>> GetAllPostsAsync()
+    public async Task<IEnumerable<Post>> GetAllPostsAsync()
     {
-      throw new NotImplementedException();
+      var posts = await _context.Posts.ToListAsync();
+      return posts;
     }
 
-    public Task<Post> GetPostByIdAsync(int id)
+    public async Task<Post> GetPostByIdAsync(int id)
     {
-      throw new NotImplementedException();
+      var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+      return post;
     }
 
-    public Task CreatePostAsync(Post post)
+    public async Task CreatePostAsync(Post post)
     {
-      throw new NotImplementedException();
+      if(post == null)
+      {
+        throw new ArgumentNullException(nameof(post));
+      }
+
+      await _context.Posts.AddAsync(post);
     }
 
-    public Task UpdatePostAsync(Post post)
+    public void UpdatePostAsync(Post post)
     {
-      throw new NotImplementedException();
+      // Nothing
     }
 
-    public Task DeletePostAsync(Post post)
+    public void DeletePostAsync(Post post)
     {
-      throw new NotImplementedException();
+      if(post == null)
+      {
+        throw new ArgumentNullException(nameof(post));
+      }
+
+      _context.Posts.Remove(post);
     }
 
     
 
-    public Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync()
     {
-      throw new NotImplementedException();
+      return (await _context.SaveChangesAsync() >= 0);
     }
   }
 }

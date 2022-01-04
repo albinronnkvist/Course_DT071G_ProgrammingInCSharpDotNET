@@ -7,8 +7,8 @@ namespace ForumAPI.Repositories.PostRepository
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<Post> GetPostByIdAsync(int id);
         Task CreatePostAsync(Post post);
-        Task UpdatePostAsync(Post post);
-        Task DeletePostAsync(Post post);
+        void UpdatePostAsync(Post post);
+        void DeletePostAsync(Post post);
         
         Task<bool> SaveChangesAsync();
     }
