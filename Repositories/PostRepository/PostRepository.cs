@@ -1,9 +1,19 @@
+using ForumAPI.Data;
 using ForumAPI.Models;
 
 namespace ForumAPI.Repositories.PostRepository
 {
   public class PostRepository : IPostRepository
   {
+    private readonly DataContext _context;
+
+    public PostRepository(DataContext context)
+    {
+      _context = context;
+    }
+
+
+
     public Task<IEnumerable<Post>> GetAllPostsAsync()
     {
       throw new NotImplementedException();

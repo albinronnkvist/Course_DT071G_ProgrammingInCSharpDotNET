@@ -1,9 +1,19 @@
+using ForumAPI.Data;
 using ForumAPI.Models;
 
 namespace ForumAPI.Repositories.UserRepository
 {
   public class UserRepository : IUserRepository
   {
+    private readonly DataContext _context;
+
+    public UserRepository(DataContext context)
+    {
+      _context = context;
+    }
+
+
+
     public Task<IEnumerable<User>> GetAllUsersAsync()
     {
       throw new NotImplementedException();
