@@ -1,5 +1,6 @@
 using ForumAPI.Dtos.Post;
 using ForumAPI.Dtos.User;
+using ForumAPI.Repositories.UserRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,15 @@ namespace ForumAPI.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
+
+        private readonly IUserRepository _userRepository;
+
+        public UsersController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+
         // GET api/users
         [AllowAnonymous]
         [HttpGet]

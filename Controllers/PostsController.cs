@@ -1,4 +1,5 @@
 using ForumAPI.Dtos.Post;
+using ForumAPI.Repositories.PostRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,14 @@ namespace ForumAPI.Controllers
     [Route("api/posts")]
     public class PostsController : ControllerBase
     {
+        private readonly IPostRepository _postRepository;
+
+        public PostsController(IPostRepository postRepository)
+        {
+            _postRepository = postRepository;
+        }
+
+
         // GET api/posts
         [AllowAnonymous]
         [HttpGet]
