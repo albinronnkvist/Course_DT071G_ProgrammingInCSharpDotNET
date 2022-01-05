@@ -1,3 +1,4 @@
+using AutoMapper;
 using ForumAPI.Dtos.Post;
 using ForumAPI.Dtos.User;
 using ForumAPI.Repositories.UserRepository;
@@ -13,10 +14,12 @@ namespace ForumAPI.Controllers
     {
 
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
 

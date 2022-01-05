@@ -1,3 +1,4 @@
+using AutoMapper;
 using ForumAPI.Dtos.Post;
 using ForumAPI.Repositories.PostRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace ForumAPI.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
+        private readonly IMapper _mapper;
 
-        public PostsController(IPostRepository postRepository)
+        public PostsController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
+            _mapper = mapper;
         }
 
 
