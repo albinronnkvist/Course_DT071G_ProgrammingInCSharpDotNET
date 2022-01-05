@@ -49,7 +49,7 @@ namespace ForumAPI.Controllers
                 return NotFound();
             }
             
-            var res = _mapper.Map<IEnumerable<GetUserDto>>(user);
+            var res = _mapper.Map<GetUserDto>(user);
 
             return Ok(res);
         }
