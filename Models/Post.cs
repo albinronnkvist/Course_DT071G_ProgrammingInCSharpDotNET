@@ -10,18 +10,18 @@ namespace ForumAPI.Models
 
         [Required]
         [MaxLength(150)]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
-        public string? Text { get; set; }
+        public string Text { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        public User? User { get; set; }
+        public User User { get; set; }
     }
 }

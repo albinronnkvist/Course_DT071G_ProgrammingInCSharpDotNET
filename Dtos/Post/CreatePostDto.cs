@@ -6,9 +6,9 @@ namespace ForumAPI.Dtos.Post
     {
         [Required]
         [MaxLength(150)]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
-        public string? Text { get; set; }
+        public string Text { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using ForumAPI.Data;
 using ForumAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForumAPI.Repositories.UserRepository
 {
@@ -14,53 +15,80 @@ namespace ForumAPI.Repositories.UserRepository
 
 
 
-    public Task<IEnumerable<User>> GetAllUsersAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-      throw new NotImplementedException();
+      var users = await _context.Users.ToListAsync();
+      return users;
     }
 
-    public Task<User> GetUserByIdAsync(int id)
+    public async Task<User> GetUserByIdAsync(int id)
     {
-      throw new NotImplementedException();
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+      if(user == null)
+      {
+        throw new ArgumentNullException(nameof(user));
+      }
+      
+      return user;
     }
 
-    public Task<User> GetFullUserByIdAsync(int id)
+    public async Task RegisterUserAsync(User user)
     {
-      throw new NotImplementedException();
+      if(user == null)
+      {
+        throw new ArgumentNullException(nameof(user));
+      }
+
+      await _context.Users.AddAsync(user);
     }
 
-    public Task RegisterUserAsync(User user, string password)
+    public async Task<User> LoginUserAsync(string username)
     {
-      throw new NotImplementedException();
+      if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
+      {
+        throw new ArgumentNullException(nameof(username));
+      }
+
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+      
+      return user;
     }
 
-    public Task LoginUserAsync(string username, string password)
+    public void UpdateUserAsync(User user)
     {
-      throw new NotImplementedException();
-    }
-
-    public Task UpdateUserAsync(User user)
-    {
-      throw new NotImplementedException();
+      // Nothing
     }
     
-    public Task DeleteUserAsync(User user)
+    public void DeleteUserAsync(User user)
     {
-      throw new NotImplementedException();
+      if(user == null)
+      {
+        throw new ArgumentNullException(nameof(user));
+      }
+
+      _context.Users.Remove(user);
     }
 
 
 
-    public Task<bool> UserExistsAsync(string username)
+    public async Task<bool> UserExistsAsync(string username)
     {
-      throw new NotImplementedException();
+      if(await _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower())))
+      {
+        return true;
+      }
+      else 
+      {
+        return false;
+      }
     }
 
 
 
-    public Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync()
     {
-      throw new NotImplementedException();
+      return (await _context.SaveChangesAsync() >= 0);
     }
   }
 }
