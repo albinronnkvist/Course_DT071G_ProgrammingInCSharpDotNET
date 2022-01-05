@@ -24,12 +24,6 @@ namespace ForumAPI.Repositories.UserRepository
     public async Task<User> GetUserByIdAsync(int id)
     {
       var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-      if(user == null)
-      {
-        throw new ArgumentNullException(nameof(user));
-      }
-      
       return user;
     }
 
@@ -74,6 +68,11 @@ namespace ForumAPI.Repositories.UserRepository
 
     public async Task<bool> UserExistsAsync(string username)
     {
+      if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
+      {
+        throw new ArgumentNullException(nameof(username));
+      }
+      
       if(await _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower())))
       {
         return true;
