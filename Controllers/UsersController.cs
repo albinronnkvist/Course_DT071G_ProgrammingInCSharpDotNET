@@ -17,11 +17,13 @@ namespace ForumAPI.Controllers
 
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly SecureToken _token;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, SecureToken token)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _token = token;
         }
 
 
@@ -113,9 +115,10 @@ namespace ForumAPI.Controllers
                 return Unauthorized();
             }
 
-            // Create token here
+            // Create token
+            var token = _token.CreateToken(user);
 
-            return Ok(); // return token
+            return Ok(token); // return token
         }
 
         // PUT api/users/{id}
