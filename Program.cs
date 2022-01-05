@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen(c => {
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-// Register auto mapper.
+// Register AutoMapper.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Register repositories.
@@ -49,6 +49,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 // Register token handler.
 builder.Services.AddSingleton<SecureToken>();
+
+// Register HttpContextAccessor.
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
 
 var app = builder.Build();
 

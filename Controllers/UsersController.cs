@@ -55,6 +55,29 @@ namespace ForumAPI.Controllers
 
             return Ok(res);
         }
+
+        // GET api/users/full/{id}
+        [HttpGet("full/{id}", Name="GetFullUserByIdAsync")]
+        public async Task<ActionResult<GetFullUserDto>> GetFullUserByIdAsync(int id)
+        {
+            var user = await _userRepository.GetUserByIdAsync(id);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _token.GetUserId();
+
+            if(user.Id != currentUserId)
+            {
+                return Unauthorized();
+            }
+            
+            var res = _mapper.Map<GetFullUserDto>(user);
+
+            return Ok(res);
+        }
         
         // POST api/users/register
         [AllowAnonymous]
@@ -121,12 +144,71 @@ namespace ForumAPI.Controllers
             return Ok(token); // return token
         }
 
-        // PUT api/users/{id}
+        // PUT api/users/username{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(int id, UpdateUserDto req)
         {
-            return Ok();
+            // Get user with the request id
+            var user = await _userRepository.GetUserByIdAsync(id);
+
+            // If no user was found in the database
+            if(user == null)
+            {
+                // 404 not found
+                return NotFound();
+            }
+
+            // Get current user id from token
+            var currentUserId = _token.GetUserId();
+
+            // If user tries to update another user
+            if(user.Id != currentUserId)
+            {
+                // 401 unauthorized
+                return Unauthorized();
+            }
+
+            // Check if username and email already exists
+            var usernameExists = await _userRepository.UsernameExistsAsync(req.Username);
+            var emailExists = await _userRepository.EmailExistsAsync(req.Email);
+
+            // If they already exist
+            if(usernameExists)
+            {
+                if(!req.Username.ToLower().Equals(user.Username.ToLower()))
+                {
+                    // 409 conflict
+                    return Conflict();
+                } 
+            }
+
+            if(emailExists)
+            {
+                if(!req.Email.ToLower().Equals(user.Email.ToLower()))
+                {
+                    // 409 conflict
+                    return Conflict();
+                }
+            }
+            
+            // Replace email and password
+            user.Username = req.Username;
+            user.Email = req.Email;
+
+            // Replace password hash and salt
+            byte[] salt = SecurePassword.GenerateRandomSalt();
+            user.PasswordSalt = salt;
+            user.PasswordHash = SecurePassword.SaltAndHashPassword(req.Password, salt);
+            
+            // Update user and save changes
+            _userRepository.UpdateUser(user);
+            await _userRepository.SaveChangesAsync();
+
+            // 204 no Content
+            return NoContent();
         }
+
+        // PATCH api/users/{id}
 
         // DELETE api/users/{id}
         [HttpDelete("{id}")]

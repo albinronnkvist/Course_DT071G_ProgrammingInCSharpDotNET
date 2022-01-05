@@ -8,10 +8,12 @@ namespace ForumAPI.UserSecurity
     public class SecureToken
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SecureToken(IConfiguration configuration)
+        public SecureToken(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public string CreateToken(User user)
@@ -50,5 +52,18 @@ namespace ForumAPI.UserSecurity
 
             return tokenHandler.WriteToken(token); // Serializes a JwtSecurityToken into a JWT in Compact Serialization Format.
         }
+
+        public int GetUserId() {
+            try {
+                checked {
+                    var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    return userId;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+        } 
     }
 }
