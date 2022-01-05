@@ -24,7 +24,7 @@ namespace ForumAPI.Controllers
         // GET api/posts
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetPostDto>>> GetAllPosts()
+        public async Task<ActionResult<IEnumerable<GetPostDto>>> GetAllPostsAsync()
         {
             return Ok();
         }
@@ -32,28 +32,28 @@ namespace ForumAPI.Controllers
         // GET api/posts/{id}
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetPostDto>> GetPostByID(int id)
+        public async Task<ActionResult<GetPostDto>> GetPostByIdAsync(int id)
         {
             return Ok();
         }
         
         // POST api/posts
         [HttpPost]
-        public async Task<ActionResult<CreatePostDto>> CreatePost(CreatePostDto req)
+        public async Task<ActionResult<CreatePostDto>> CreatePostAsync(CreatePostDto req)
         {
             return Ok();
         }
 
         // PUT api/posts/{id}
-        [HttpPut]
-        public async Task<ActionResult> UpdatePost(int id, UpdatePostDto req)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePostAsync(int id, UpdatePostDto req)
         {
             return Ok();
         }
 
         // DELETE api/posts/{id}
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePost(int id)
+        public async Task<ActionResult> DeletePostAsync(int id)
         {
             return Ok();
         }

@@ -14,7 +14,7 @@ namespace ForumAPI.UserSecurity
             return salt;
         }
 
-        private static byte[] SaltAndHashPassword(string password, byte[] salt)
+        public static byte[] SaltAndHashPassword(string password, byte[] salt)
         {
             SHA512 sha = SHA512.Create();
 

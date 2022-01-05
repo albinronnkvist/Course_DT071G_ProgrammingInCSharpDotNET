@@ -49,12 +49,12 @@ namespace ForumAPI.Repositories.UserRepository
       return user;
     }
 
-    public void UpdateUserAsync(User user)
+    public void UpdateUser(User user)
     {
       // Nothing
     }
     
-    public void DeleteUserAsync(User user)
+    public void DeleteUser(User user)
     {
       if(user == null)
       {

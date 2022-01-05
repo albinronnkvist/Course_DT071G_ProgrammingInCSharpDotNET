@@ -8,8 +8,8 @@ namespace ForumAPI.Repositories.UserRepository
         Task<User> GetUserByIdAsync(int id);
         Task RegisterUserAsync(User user);
         Task<User> LoginUserAsync(string username);
-        void UpdateUserAsync(User user);
-        void DeleteUserAsync(User user);
+        void UpdateUser(User user);
+        void DeleteUser(User user);
 
         Task<bool> UserExistsAsync(string username);
 
