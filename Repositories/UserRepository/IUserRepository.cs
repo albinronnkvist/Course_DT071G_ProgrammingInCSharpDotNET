@@ -11,7 +11,8 @@ namespace ForumAPI.Repositories.UserRepository
         void UpdateUser(User user);
         void DeleteUser(User user);
 
-        Task<bool> UserExistsAsync(string username);
+        Task<bool> UsernameExistsAsync(string username);
+        Task<bool> EmailExistsAsync(string email);
 
         Task<bool> SaveChangesAsync();
     }

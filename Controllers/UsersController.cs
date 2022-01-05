@@ -59,9 +59,21 @@ namespace ForumAPI.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<RegisterUserDto>> RegisterUserAsync(RegisterUserDto req)
         {
+            // Check if username and email already exists
+            var usernameExists = await _userRepository.UsernameExistsAsync(req.Username);
+            var emailExists = await _userRepository.EmailExistsAsync(req.Email);
+
+            // If they already exist
+            if(usernameExists || emailExists)
+            {
+                // 409 conflict
+                return Conflict();
+            }
+
+            // Map req-object to a full user-object
             var newUser = _mapper.Map<User>(req);
 
-            // Secure password
+            // Generate salt and hashed password and add to newUser-object
             byte[] salt = SecurePassword.GenerateRandomSalt();
             newUser.PasswordSalt = salt;
             newUser.PasswordHash = SecurePassword.SaltAndHashPassword(req.Password, salt);
@@ -70,7 +82,7 @@ namespace ForumAPI.Controllers
             await _userRepository.RegisterUserAsync(newUser);
             await _userRepository.SaveChangesAsync();
 
-            // Map object to return
+            // Map object to return as response
             var res = _mapper.Map<GetUserDto>(newUser);
 
             // 201 created
@@ -82,7 +94,28 @@ namespace ForumAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginUserDto>> LoginUserAsync(LoginUserDto req)
         {
-            return Ok();
+            // Check if user exists in database
+            var user = await _userRepository.LoginUserAsync(req.Username);
+            
+            // Wrong username
+            if(user == null)
+            {
+                // 401 unauthorized
+                return Unauthorized();
+            }
+
+            var verifiedPassword = SecurePassword.VerifyPasswordHash(req.Password, user.PasswordHash, user.PasswordSalt);
+
+            // Wrong password
+            if(!verifiedPassword)
+            {
+                // 401 unauthorized
+                return Unauthorized();
+            }
+
+            // Create token here
+
+            return Ok(); // return token
         }
 
         // PUT api/users/{id}

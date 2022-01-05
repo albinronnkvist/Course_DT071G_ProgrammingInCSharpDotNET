@@ -66,21 +66,24 @@ namespace ForumAPI.Repositories.UserRepository
 
 
 
-    public async Task<bool> UserExistsAsync(string username)
+    public async Task<bool> UsernameExistsAsync(string username)
     {
       if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
       {
         throw new ArgumentNullException(nameof(username));
       }
       
-      if(await _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower())))
+      return await _context.Users.AnyAsync(u => u.Username.ToLower().Equals(username.ToLower()));
+    }
+
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+      if(string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
       {
-        return true;
+        throw new ArgumentNullException(nameof(email));
       }
-      else 
-      {
-        return false;
-      }
+      
+      return await _context.Users.AnyAsync(u => u.Email.ToLower().Equals(email.ToLower()));
     }
 
 

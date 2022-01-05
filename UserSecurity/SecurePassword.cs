@@ -22,5 +22,19 @@ namespace ForumAPI.UserSecurity
 
             return sha.ComputeHash(Encoding.Unicode.GetBytes(saltedPassword));
         }
+
+        public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            var computedHash = SaltAndHashPassword(password, passwordSalt);
+            
+            for(int i = 0; i < computedHash.Length; i++)
+            {
+                if(computedHash[i] != passwordHash[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
