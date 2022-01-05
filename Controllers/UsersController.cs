@@ -209,12 +209,28 @@ namespace ForumAPI.Controllers
         }
 
         // PATCH api/users/{id}
+        // Not implemented yet
 
         // DELETE api/users/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
-            return Ok();
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _token.GetUserId();
+            if(user.Id != currentUserId)
+            {
+                return Unauthorized();
+            }
+
+            _userRepository.DeleteUser(user);
+            await _userRepository.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
