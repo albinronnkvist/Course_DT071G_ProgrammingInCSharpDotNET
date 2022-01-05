@@ -38,12 +38,12 @@ namespace ForumAPI.Repositories.PostRepository
       await _context.Posts.AddAsync(post);
     }
 
-    public void UpdatePostAsync(Post post)
+    public void UpdatePost(Post post)
     {
       // Nothing
     }
 
-    public void DeletePostAsync(Post post)
+    public void DeletePost(Post post)
     {
       if(post == null)
       {

@@ -1,6 +1,8 @@
 using AutoMapper;
 using ForumAPI.Dtos.Post;
+using ForumAPI.Models;
 using ForumAPI.Repositories.PostRepository;
+using ForumAPI.UserSecurity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +15,13 @@ namespace ForumAPI.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
+        private readonly SecureToken _token;
 
-        public PostsController(IPostRepository postRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository, IMapper mapper, SecureToken token)
         {
             _postRepository = postRepository;
             _mapper = mapper;
+            _token = token;
         }
 
 
@@ -26,36 +30,92 @@ namespace ForumAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetPostDto>>> GetAllPostsAsync()
         {
-            return Ok();
+            var posts = await _postRepository.GetAllPostsAsync();
+
+            var res = _mapper.Map<IEnumerable<GetPostDto>>(posts);
+            return Ok(res);
         }
 
         // GET api/posts/{id}
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="GetPostByIdAsync")]
         public async Task<ActionResult<GetPostDto>> GetPostByIdAsync(int id)
         {
-            return Ok();
+            var post = await _postRepository.GetPostByIdAsync(id);
+
+            if(post == null)
+            {
+                return NoContent();
+            }
+
+            var res = _mapper.Map<GetPostDto>(post);
+
+            return Ok(res);
         }
         
         // POST api/posts
         [HttpPost]
         public async Task<ActionResult<CreatePostDto>> CreatePostAsync(CreatePostDto req)
         {
-            return Ok();
+            var currentUserId = _token.GetUserId();
+
+            if(currentUserId < 0)
+            {
+                return Unauthorized();
+            }
+
+            var newPost = _mapper.Map<Post>(req);
+            await _postRepository.CreatePostAsync(newPost);
+            await _postRepository.SaveChangesAsync();
+
+            var res = _mapper.Map<GetPostDto>(newPost);
+
+            return CreatedAtRoute(nameof(GetPostByIdAsync), new {Id = res.Id}, res);
         }
 
         // PUT api/posts/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePostAsync(int id, UpdatePostDto req)
         {
-            return Ok();
+            var post = await _postRepository.GetPostByIdAsync(id);
+            if(post == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _token.GetUserId();
+            if(currentUserId != post.UserId)
+            {
+                return Unauthorized();
+            }
+
+            _mapper.Map(req, post);
+            _postRepository.UpdatePost(post);
+            await _postRepository.SaveChangesAsync();    
+
+            return NoContent();
         }
 
         // DELETE api/posts/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePostAsync(int id)
         {
-            return Ok();
+            var post = await _postRepository.GetPostByIdAsync(id);
+            if(post == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _token.GetUserId();
+            if(currentUserId != post.UserId)
+            {
+                return Unauthorized();
+            }
+
+            _postRepository.DeletePost(post);
+            await _postRepository.SaveChangesAsync();
+            
+            return NoContent();
         }
     }
 }

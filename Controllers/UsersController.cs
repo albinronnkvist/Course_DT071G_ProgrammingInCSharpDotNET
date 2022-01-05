@@ -146,7 +146,7 @@ namespace ForumAPI.Controllers
 
         // PUT api/users/username{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(int id, UpdateUserDto req)
+        public async Task<ActionResult> UpdateUserAsync(int id, UpdateUserDto req)
         {
             // Get user with the request id
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -213,7 +213,7 @@ namespace ForumAPI.Controllers
 
         // DELETE api/users/{id}
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
+        public async Task<ActionResult> DeleteUserAsync(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
             if(user == null)
