@@ -65,6 +65,7 @@ namespace ForumAPI.Controllers
             }
 
             var newPost = _mapper.Map<Post>(req);
+            newPost.UserId = currentUserId;
             await _postRepository.CreatePostAsync(newPost);
             await _postRepository.SaveChangesAsync();
 
@@ -114,7 +115,7 @@ namespace ForumAPI.Controllers
 
             _postRepository.DeletePost(post);
             await _postRepository.SaveChangesAsync();
-            
+
             return NoContent();
         }
     }
