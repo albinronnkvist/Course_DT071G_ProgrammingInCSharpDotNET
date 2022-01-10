@@ -15,13 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Register DbContext.
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure swagger to work with JWT Bearer.
 builder.Services.AddSwaggerGen(c => {
     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme{
-        Description = "Standard Authorization header using the Bearer shceme. Example: \"bearer {token}\"",
+        Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
         In = ParameterLocation.Header,
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
@@ -37,11 +38,12 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Register JWT Bearer.
+var signingKey = System.Text.Encoding.UTF8.GetBytes(builder.Configuration.GetSection("TokenSettings:SigningKey").Value);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+        IssuerSigningKey = new SymmetricSecurityKey(signingKey),
         ValidateIssuer = false,
         ValidateAudience = false
     };

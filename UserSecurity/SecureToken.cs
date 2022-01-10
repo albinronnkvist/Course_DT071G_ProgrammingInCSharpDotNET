@@ -26,9 +26,9 @@ namespace ForumAPI.UserSecurity
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-            // Generate a security key with they string in our appsetting as a parameter
-            // Symmetric key is a string which is used to encrypt the data and with the same string, we can decrypt the data, which means a single string is required for encryption and decryption. 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            // Generate a security key with the string in our appsettings as a parameter
+            // Symmetric key is a string which is used to encrypt the data and with the same string, we can decrypt the data.
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("TokenSettings:SigningKey").Value));
 
             // Sign credentials
             // Represents the cryptographic key and security algorithms that are used to generate a digital signature.
@@ -36,7 +36,7 @@ namespace ForumAPI.UserSecurity
 
 
 
-            // This is a place holder for all the attributes related to the issued token.
+            // Placeholder for all the attributes related to the issued token.
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims), // Gets or sets the output claims to be included in the issued token.
