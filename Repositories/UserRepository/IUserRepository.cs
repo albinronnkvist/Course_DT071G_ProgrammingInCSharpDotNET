@@ -2,6 +2,7 @@ using ForumAPI.Models;
 
 namespace ForumAPI.Repositories.UserRepository
 {
+    // Create an interface that defines a contract with members that the implementation classes must implement.
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAllUsersAsync();

@@ -24,6 +24,7 @@ namespace ForumAPI.Models
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        // Add a navigation property to create a relationship with the Post entity.
         public List<Post> Posts { get; set; }
     }
 }

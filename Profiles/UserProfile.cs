@@ -6,7 +6,9 @@ namespace ForumAPI.Profiles
 {
     public class UserProfile : Profile
     {
+        // Define AutoMapper profiles
         public UserProfile() {
+            // Define each map from source to target
             CreateMap<User, GetFullUserDto>();
             CreateMap<User, GetUserDto>();
             CreateMap<User, UpdateUserDto>();

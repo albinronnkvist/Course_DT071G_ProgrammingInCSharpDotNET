@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ForumAPI.Repositories.PostRepository
 {
+  // Works the same way as UserRepository, go to that file for more information.
   public class PostRepository : IPostRepository
   {
     private readonly DataContext _context;

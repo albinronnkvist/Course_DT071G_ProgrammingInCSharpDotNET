@@ -2,6 +2,7 @@ using ForumAPI.Models;
 
 namespace ForumAPI.Repositories.PostRepository
 {
+    // Implemented in the same way as IUserRepository, go to that file for more information.
     public interface IPostRepository
     {
         Task<IEnumerable<Post>> GetAllPostsAsync();
