@@ -45,7 +45,7 @@ namespace ForumAPI.Controllers
 
             if(post == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
             var res = _mapper.Map<GetPostDto>(post);
