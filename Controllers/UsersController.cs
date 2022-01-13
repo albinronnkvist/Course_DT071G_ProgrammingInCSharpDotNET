@@ -230,7 +230,6 @@ namespace ForumAPI.Controllers
             user.PasswordHash = SecurePassword.SaltAndHashPassword(req.Password, salt);
             
             // Save changes
-            _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
 
             // 204 no content. Indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page. 

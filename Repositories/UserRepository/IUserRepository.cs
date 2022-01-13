@@ -9,7 +9,6 @@ namespace ForumAPI.Repositories.UserRepository
         Task<User> GetUserByIdAsync(int id);
         Task RegisterUserAsync(User user);
         Task<User> LoginUserAsync(string username);
-        void UpdateUser(User user);
         void DeleteUser(User user);
 
         Task<bool> UsernameExistsAsync(string username);

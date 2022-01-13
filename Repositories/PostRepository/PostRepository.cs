@@ -39,11 +39,6 @@ namespace ForumAPI.Repositories.PostRepository
       await _context.Posts.AddAsync(post);
     }
 
-    public void UpdatePost(Post post)
-    {
-      // Nothing
-    }
-
     public void DeletePost(Post post)
     {
       if(post == null)

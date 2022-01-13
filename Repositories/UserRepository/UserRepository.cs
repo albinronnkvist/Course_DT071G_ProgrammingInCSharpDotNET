@@ -67,12 +67,6 @@ namespace ForumAPI.Repositories.UserRepository
       // Return the User object if there was a match or null if there were no matches.
       return user;
     }
-
-    // Update a user.
-    public void UpdateUser(User user)
-    {
-      // Nothing
-    }
     
     // Delete a user.
     // Pass a User object

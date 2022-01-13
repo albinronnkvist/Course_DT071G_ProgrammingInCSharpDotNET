@@ -91,7 +91,6 @@ namespace ForumAPI.Controllers
             }
 
             _mapper.Map(req, post);
-            _postRepository.UpdatePost(post);
             await _postRepository.SaveChangesAsync();    
 
             return NoContent();
