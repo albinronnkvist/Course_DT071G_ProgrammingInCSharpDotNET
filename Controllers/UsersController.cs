@@ -74,7 +74,7 @@ namespace ForumAPI.Controllers
         // GET api/users/full/{id}
         // Get a single user by id, but with more information.
         [HttpGet("full/{id}", Name="GetFullUserByIdAsync")]
-        public async Task<ActionResult<GetFullUserDto>> GetFullUserByIdAsync(int id)
+        public async Task<ActionResult<GetFullUserDto>> GetFullUserByIdAsync(int id) // Get the id from the request
         {
             // Get a user from the database with the id that was passed in the request.
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -125,8 +125,9 @@ namespace ForumAPI.Controllers
             newUser.PasswordSalt = salt;
             newUser.PasswordHash = SecurePassword.SaltAndHashPassword(req.Password, salt);
 
-            // Register the new user and save it to the database
+            // Track the new user.
             await _userRepository.RegisterUserAsync(newUser);
+            // Save it to the database.
             await _userRepository.SaveChangesAsync();
 
             // Map the User object to a DTO
@@ -175,9 +176,9 @@ namespace ForumAPI.Controllers
         // PUT api/users/username{id}
         // Update a user.
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUserAsync(int id, UpdateUserDto req)
+        public async Task<ActionResult> UpdateUserAsync(int id, UpdateUserDto req) // Recieve an id and a DTO from the request.
         {
-            // Get user with the request id
+            // Get a user from the database with the request id
             var user = await _userRepository.GetUserByIdAsync(id);
 
             // If no user was found in the database
@@ -187,23 +188,24 @@ namespace ForumAPI.Controllers
                 return NotFound();
             }
 
-            // Get current user id from token
+            // Get current user id from the JWT in the HttpContext object.
             var currentUserId = _token.GetUserId();
 
-            // If user tries to update another user
+            // If the user tries to update another user.
             if(user.Id != currentUserId)
             {
-                // 401 unauthorized
+                // Return 401, unauthorized.
                 return Unauthorized();
             }
 
-            // Check if username and email already exists
+            // Check if username and email from the request already exists in the database.
             var usernameExists = await _userRepository.UsernameExistsAsync(req.Username);
             var emailExists = await _userRepository.EmailExistsAsync(req.Email);
 
-            // If they already exist
+            // If username already exists in the database.
             if(usernameExists)
             {
+                // If the username from the request matches the username from the user we got from the database, which we are currently editing.
                 if(!req.Username.ToLower().Equals(user.Username.ToLower()))
                 {
                     // 409 conflict
@@ -211,6 +213,7 @@ namespace ForumAPI.Controllers
                 } 
             }
 
+            // Same as the statement above.
             if(emailExists)
             {
                 if(!req.Email.ToLower().Equals(user.Email.ToLower()))
@@ -224,12 +227,13 @@ namespace ForumAPI.Controllers
             user.Username = req.Username;
             user.Email = req.Email;
 
-            // Replace password hash and salt
+            // Replace password-hash and salt
             byte[] salt = SecurePassword.GenerateRandomSalt();
             user.PasswordSalt = salt;
             user.PasswordHash = SecurePassword.SaltAndHashPassword(req.Password, salt);
             
-            // Save changes
+            // The changes will be tracked by EF Core automatically.
+            // We then have to save the changes to actually update the database with the SaveChangesAync() method.
             await _userRepository.SaveChangesAsync();
 
             // 204 no content. Indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page. 
@@ -242,23 +246,34 @@ namespace ForumAPI.Controllers
         // DELETE api/users/{id}
         // Delete a user.
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUserAsync(int id)
+        public async Task<ActionResult> DeleteUserAsync(int id) // Get an id from the request
         {
+            // Get a user from the database that matches the request id.
             var user = await _userRepository.GetUserByIdAsync(id);
+
+            // If no user was found.
             if(user == null)
             {
+                // Return 404, not found.
                 return NotFound();
             }
 
+            // Get the id from a claim in the JWT
             var currentUserId = _token.GetUserId();
+
+            // If the user tries to delete another user (not their own user).
             if(user.Id != currentUserId)
             {
+                // Return 401, unauthorized.
                 return Unauthorized();
             }
-
+            
+            // Track the user to be deleted.
             _userRepository.DeleteUser(user);
+            // Save changes to delete the tracked user from the database.
             await _userRepository.SaveChangesAsync();
 
+            // 204 no content.
             return NoContent();
         }
     }
