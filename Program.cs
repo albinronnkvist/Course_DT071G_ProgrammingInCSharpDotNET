@@ -11,11 +11,11 @@ using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 // Register DbContext.
 builder.Services.AddDbContext<DataContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     
+// Add services for controllers.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -56,22 +56,27 @@ builder.Services.AddSingleton<SecureToken>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-
+// Build the application.
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Use Swagger during development.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Redirect HTTP requests to HTTPS.
 app.UseHttpsRedirection();
 
-// Use authentication
+// Enable authentication and authorization.
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Add endpoints for controller actions.
 app.MapControllers();
 
+// Run the application.
 app.Run();
