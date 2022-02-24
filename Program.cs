@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 // Register token handler.
-builder.Services.AddSingleton<SecureToken>();
+builder.Services.AddScoped<SecureToken>();
 
 // Register HttpContextAccessor.
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
