@@ -4,6 +4,7 @@ using ForumAPI.Models;
 using ForumAPI.Repositories.PostRepository;
 using ForumAPI.UserSecurity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumAPI.Controllers
@@ -108,6 +109,39 @@ namespace ForumAPI.Controllers
             }
 
             _mapper.Map(req, post);
+            await _postRepository.SaveChangesAsync();    
+
+            return NoContent();
+        }
+        
+        // PATCH api/posts/{id}
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> PartialUpdatePostAsync(int id, JsonPatchDocument<UpdatePostDto> req)
+        {
+            var post = await _postRepository.GetPostByIdAsync(id);
+            if(post == null)
+            {
+                return NotFound();
+            }
+
+            var currentUserId = _token.GetUserId();
+
+            // If a user tries to edit another users post.
+            if(currentUserId != post.UserId)
+            {
+                // 401, unauthorized.
+                return Unauthorized();
+            }
+
+            var postToPatch = _mapper.Map<UpdatePostDto>(post);
+            
+            req.ApplyTo(postToPatch, ModelState);
+            if(!TryValidateModel(postToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(postToPatch, post);
             await _postRepository.SaveChangesAsync();    
 
             return NoContent();

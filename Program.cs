@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     
 // Add services for controllers.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();;
 builder.Services.AddEndpointsApiExplorer();
 
 // Configure swagger to work with JWT Bearer.
