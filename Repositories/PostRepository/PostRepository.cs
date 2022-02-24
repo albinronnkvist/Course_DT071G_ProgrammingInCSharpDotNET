@@ -18,13 +18,13 @@ namespace ForumAPI.Repositories.PostRepository
 
     public async Task<IEnumerable<Post>> GetAllPostsAsync()
     {
-      var posts = await _context.Posts.ToListAsync();
+      var posts = await _context.Posts.Include(u => u.User).ToListAsync();
       return posts;
     }
 
     public async Task<Post> GetPostByIdAsync(int id)
     {
-      var post = await _context.Posts.FindAsync(id);
+      var post = await _context.Posts.Include(u => u.User).FirstOrDefaultAsync(p => p.Id == id);
       
       return post;
     }

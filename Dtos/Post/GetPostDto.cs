@@ -8,6 +8,6 @@ namespace ForumAPI.Dtos.Post
         public string Title { get; set; }
         public string Text { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int? UserId { get; set; }
+        public GetUserDto User { get; set; }
     }
 }
