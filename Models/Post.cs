@@ -17,7 +17,7 @@ namespace ForumAPI.Models
         public string Text { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now; // Sets a default value of the current date and time.
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Sets a default value of the current date and time.
 
         // If the dependent entity contains a property with a name matching the pattern: "<navigation property name>Id".
         // Then it will be configured as the foreign key
