@@ -24,7 +24,7 @@ namespace ForumAPI.Repositories.PostRepository
 
     public async Task<Post> GetPostByIdAsync(int id)
     {
-      var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+      var post = await _context.Posts.FindAsync(id);
       
       return post;
     }

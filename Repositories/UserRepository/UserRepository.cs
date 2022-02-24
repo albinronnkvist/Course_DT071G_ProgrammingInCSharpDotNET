@@ -31,7 +31,7 @@ namespace ForumAPI.Repositories.UserRepository
     public async Task<User> GetUserByIdAsync(int id)
     {
       // Get a user from the Users table that has an id which matches the input id.
-      var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+      var user = await _context.Users.FindAsync(id);
 
       // Return a User object if there was a match, or null if there were no matches.
       return user;
