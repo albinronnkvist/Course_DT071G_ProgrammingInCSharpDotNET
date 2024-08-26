@@ -30,6 +30,6 @@
 - Run the application: _dotnet run_
 - Test the application with Swagger: _https://localhost:7177/swagger/index.html_
 
-## Demo and documentation
-- Video demo: https://www.youtube.com/watch?v=-3N8dx2N0Cc
-- [Documentation](https://firebasestorage.googleapis.com/v0/b/myportfolio-4e23b.appspot.com/o/essays%2FDT071G_essay_sv.pdf?alt=media&token=772e0e6f-d96f-401a-b514-65a4ff338328)
+## Demo and essay
+- [Video demo](https://www.youtube.com/watch?v=-3N8dx2N0Cc)
+- [Essay](https://github.com/albinronnkvist/Course_DT071G_ProgrammingInCSharpDotNET/blob/master/DT071G_essay_sv.pdf)
