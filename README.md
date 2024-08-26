@@ -1,5 +1,4 @@
-# ASP.NET Core Web API - Forum API
-By: Albin Rönnkvist
+# DT071G - Programming in C# .NET
 
 ## Development environment
 - _VS Code_ with the following extensions:
@@ -12,7 +11,6 @@ By: Albin Rönnkvist
 - _SQL Server Management Studio (SSMS)_
 
 ## Setup
-- Clone repo: _git clone https://github.com/albinronnkvist/ForumAPI_
 - Configure EF Core and add a database connection:
   - Create a database connection using SSMS.
   - Add the database connection string to _appsettings.json_ or in a user-secret:
@@ -34,4 +32,4 @@ By: Albin Rönnkvist
 
 ## Demo and documentation
 - Video demo: https://www.youtube.com/watch?v=-3N8dx2N0Cc
-- Documentation: https://albinronnkvist.se/skola/dt071g/Rapport.pdf
+- [Documentation](https://firebasestorage.googleapis.com/v0/b/myportfolio-4e23b.appspot.com/o/essays%2FDT071G_essay_sv.pdf?alt=media&token=772e0e6f-d96f-401a-b514-65a4ff338328)
