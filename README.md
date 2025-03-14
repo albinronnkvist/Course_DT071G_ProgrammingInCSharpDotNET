@@ -1,5 +1,9 @@
 # DT071G - Programming in C# .NET
 
+The basics of programming with C# .NET.
+
+In this course, I explored programming with C#, covering everything from fundamental OOP principles to more advanced design patterns like Dependency Injection. I then applied this knowledge by developing various applications using C# and .NET (5+). I built console applications with .NET 5 in a Linux environment, a mobile application using Xamarin.Forms, and an API with ASP.NET Core. Additionally, I worked with databases, utilizing SQLite, SQL Server, and EF Core for data management.
+
 ## Development environment
 - _VS Code_ with the following extensions:
   - _ms-dotnettools.csharp_
